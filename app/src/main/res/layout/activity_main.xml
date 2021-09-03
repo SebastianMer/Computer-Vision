@@ -10,9 +10,8 @@
 
     <Button
         android:id="@+id/btnCamara"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:text="@string/btnCamara"
         tools:layout_editor_absoluteX="151dp"
         tools:layout_editor_absoluteY="16dp" />
@@ -20,7 +19,15 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+        android:layout_height="628dp" />
+
+    <Button
+        android:id="@+id/btnGaleria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onclick"
+        android:gravity="center_horizontal"
+        android:text="@string/btnGaleria" />
 
 </LinearLayout>

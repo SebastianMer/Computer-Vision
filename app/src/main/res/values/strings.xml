@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">parcial1</string>
     <string name="btnCamara">Camara</string>
+    <string name="btnGaleria">Galeria</string>
 </resources>
