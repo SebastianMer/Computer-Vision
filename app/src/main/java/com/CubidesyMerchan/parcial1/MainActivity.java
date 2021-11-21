@@ -7,9 +7,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import org.opencv.android.OpenCVLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +21,14 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView;
     ImageView imagen;
 
+    private static String TAG = "MainActivity";
+    static {
+        if(OpenCVLoader.initDebug()){
+            Log.d(TAG, "OpenCV instalado exitosamente.");
+        }else{
+            Log.d(TAG, "OpenCV no se instalo Error..");
+        }
+    }
 
 
     @Override
