@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,11 +23,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
+import static org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY;
+import static org.opencv.imgproc.Imgproc.cvtColor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnGaleria;
     ImageView imageView;
     ImageView imagen;
+    Mat img = new Mat();
+    Bitmap gris, imgbitmap;
     String rutaImagen;
 
     private static String TAG = "MainActivity";
@@ -79,9 +90,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*public void onclick(View view){
-        cargarImagen();
-    }*/
     private void cargarImagen(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/");
@@ -118,13 +126,20 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode,resultCode,data);
         if(resultCode==RESULT_OK){
             Uri path =data.getData();
-            imagen.setImageURI(path);
+
+            try {
+                imgbitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), path);
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+            imagen.setImageBitmap(imgbitmap);
+            Grises(imageView);
         }
         if (requestCode==1 && resultCode == RESULT_OK){
             /*Bundle extras= data.getExtras();
             Bitmap imgBitmap= (Bitmap) extras.get("data");*/
             Bitmap imgBitmap = BitmapFactory.decodeFile(rutaImagen);
-            imageView.setImageBitmap(imgBitmap);
+            imagen.setImageBitmap(imgBitmap);
         }
     }
 
@@ -134,5 +149,26 @@ public class MainActivity extends AppCompatActivity {
         File imagen = File.createTempFile(nombreImagen,".jpg", directorio);
         rutaImagen = imagen.getAbsolutePath();
         return imagen;
+    }
+
+    public void Grises(View v){
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inDither = false;
+        o.inSampleSize = 4;
+
+        int w = imgbitmap.getWidth(), h = imgbitmap.getHeight();
+        gris = Bitmap.createBitmap(h, w, Bitmap.Config.RGB_565);
+
+        //Convertir de BitMap a Mat
+        Utils.bitmapToMat(imgbitmap, img);
+        //Cambiar de escala
+        cvtColor(img, img, COLOR_BGR2GRAY);
+        MatOfRect rostro = new MatOfRect();
+        //FaceDetector.detectMultiscale();
+
+        //Volver a cambiar a BitMap para poner en pantalla
+        Utils.matToBitmap(img, imgbitmap);
+
+        imageView.setImageBitmap(imgbitmap);
     }
 }
