@@ -204,8 +204,15 @@ org/opencv/ml/RTrees.java
  org.opencv.ml.RTrees
 org/opencv/features2d/BOWTrainer.java
  org.opencv.features2d.BOWTrainer
-org/opencv/ml/SVM.java
- org.opencv.ml.SVM
+org/opencv/android/BaseLoaderCallback.java
+ org.opencv.android.BaseLoaderCallback
+ org.opencv.android.BaseLoaderCallback$1
+ org.opencv.android.BaseLoaderCallback$2
+ org.opencv.android.BaseLoaderCallback$3
+ org.opencv.android.BaseLoaderCallback$4
+ org.opencv.android.BaseLoaderCallback$5
+ org.opencv.android.BaseLoaderCallback$6
+ org.opencv.android.BaseLoaderCallback$7
 org/opencv/features2d/BFMatcher.java
  org.opencv.features2d.BFMatcher
 org/opencv/imgproc/GeneralizedHoughGuil.java
@@ -297,12 +304,5 @@ org/opencv/ml/StatModel.java
  org.opencv.ml.StatModel
 org/opencv/utils/Converters.java
  org.opencv.utils.Converters
-org/opencv/android/BaseLoaderCallback.java
- org.opencv.android.BaseLoaderCallback
- org.opencv.android.BaseLoaderCallback$1
- org.opencv.android.BaseLoaderCallback$2
- org.opencv.android.BaseLoaderCallback$3
- org.opencv.android.BaseLoaderCallback$4
- org.opencv.android.BaseLoaderCallback$5
- org.opencv.android.BaseLoaderCallback$6
- org.opencv.android.BaseLoaderCallback$7
+org/opencv/ml/SVM.java
+ org.opencv.ml.SVM

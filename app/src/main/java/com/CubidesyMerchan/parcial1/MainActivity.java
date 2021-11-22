@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView;
     ImageView imagen;
     Mat img = new Mat();
-    Bitmap gris, imgbitmap;
+    Bitmap imgbitmap;
     String rutaImagen;
     CascadeClassifier dect;
     File haar;
@@ -169,11 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Grises(View v){
         BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inDither = true;
-        o.inSampleSize = 1;
 
         int w = imgbitmap.getWidth(), h = imgbitmap.getHeight();
-        gris = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
         //Convertir de BitMap a Mat
         Utils.bitmapToMat(imgbitmap, img);
@@ -204,8 +202,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Detección de rostros
-
-
         MatOfRect matOfRect = new MatOfRect();
         rostro.detectMultiScale(img, matOfRect);
 
@@ -213,14 +209,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         for(Rect cara: matOfRect.toArray()){
-            Imgproc.rectangle(img, new Point(cara.x+300, cara.y+300), new Point(cara.x + cara.width*20, cara.y + cara.height*20), new Scalar(0,0,255), 3);
+            Imgproc.rectangle(img, new Point(cara.x, cara.y), new Point(cara.x + cara.width, cara.y + cara.height), new Scalar(0,0,255), 3);
         }
 
-        //Imgproc.resize(img, img, new Size(1, 1));
         //Volver a cambiar a BitMap para poner en pantalla
-        Utils.matToBitmap(img, imgbitmap);
+        Bitmap gris = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img, gris);
 
-        imageView.setImageBitmap(imgbitmap);
+        imageView.setImageBitmap(gris);
+
+        Toast.makeText(getApplicationContext(), numcaras+" Caras encontradas", Toast.LENGTH_SHORT).show();
     }
 
 
