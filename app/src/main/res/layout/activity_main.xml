@@ -9,10 +9,9 @@
     android:background="@color/design_default_color_secondary_variant">
 
 
-
     <Button
         android:id="@+id/btnCamara"
-        android:layout_width="178dp"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|left"
         android:gravity="center_horizontal"
@@ -28,30 +27,25 @@
 
     <Button
         android:id="@+id/btnGaleria"
-        android:layout_width="178dp"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:gravity="center_horizontal"
         android:includeFontPadding="true"
-        android:onClick="onclick"
         android:text="@string/btnGaleria" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="178dp"
-        android:layout_height="37dp"
-        android:layout_gravity="right"
-        android:gravity="center_horizontal"
-        android:text="Detección"
-        android:translationY="-720sp" />
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="@string/btnRec"
+        android:translationX="140dp"
+        android:translationY="-50dp" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="178dp"
-        android:layout_height="37dp"
-        android:layout_gravity="left"
-        android:gravity="center_horizontal"
-        android:text="Reconocimiento"
-        android:translationY="-755sp" />
+        android:id="@+id/btnRec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 
 </LinearLayout>

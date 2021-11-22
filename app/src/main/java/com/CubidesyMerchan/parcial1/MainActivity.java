@@ -170,9 +170,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void Grises(View v){
         BitmapFactory.Options o = new BitmapFactory.Options();
-<<<<<<< HEAD
-=======
->>>>>>> prueba
 
         //Convertir de BitMap a Mat
         Utils.bitmapToMat(imgbitmap, img);
@@ -201,10 +198,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("OpenCVActivity", "Error cargando cascade", e);
         }
-<<<<<<< HEAD
-=======
->>>>>>> prueba
-
         //Detección de rostros
 
 
@@ -215,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         for(Rect cara: matOfRect.toArray()){
-            Imgproc.rectangle(img, new Point(cara.x+300, cara.y+300), new Point(cara.x + cara.width*20, cara.y + cara.height*20), new Scalar(0,0,255), 3);
+            Imgproc.rectangle(img, new Point(cara.x, cara.y), new Point(cara.x + cara.width, cara.y + cara.height), new Scalar(0,0,255), 3);
         }
 
         //Imgproc.resize(img, img, new Size(1, 1));

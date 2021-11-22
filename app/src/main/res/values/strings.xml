@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Vision</string>
     <string name="btnCamara">Camara</string>
-    <string name="btnGaleria">Galeria</string>
+    <string name="btnGaleria">Detectar</string>
+    <string name="btnRec">Reconocer</string>
 </resources>
