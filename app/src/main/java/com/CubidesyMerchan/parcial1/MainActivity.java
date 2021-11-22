@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.graphics.BitmapCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,16 +24,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Size;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.osgi.OpenCVNativeLoader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
 import static org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY;
@@ -46,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     Mat img = new Mat();
     Bitmap gris, imgbitmap;
     String rutaImagen;
+    CascadeClassifier dect;
+    File haar;
 
     private static String TAG = "MainActivity";
     static {
@@ -62,10 +75,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
+
         btnCamara=findViewById(R.id.btnCamara);
         btnGaleria=findViewById(R.id.btnGaleria);
         imageView=findViewById(R.id.imageView);
         imagen=findViewById(R.id.imageView);
+
 
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
@@ -132,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             }catch (IOException e) {
                 e.printStackTrace();
             }
-            imagen.setImageBitmap(imgbitmap);
+            //imagen.setImageBitmap(imgbitmap);
             Grises(imageView);
         }
         if (requestCode==1 && resultCode == RESULT_OK){
@@ -154,21 +170,58 @@ public class MainActivity extends AppCompatActivity {
     public void Grises(View v){
         BitmapFactory.Options o = new BitmapFactory.Options();
         o.inDither = false;
-        o.inSampleSize = 4;
+        o.inSampleSize = 1;
 
         int w = imgbitmap.getWidth(), h = imgbitmap.getHeight();
-        gris = Bitmap.createBitmap(h, w, Bitmap.Config.RGB_565);
+        gris = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
         //Convertir de BitMap a Mat
         Utils.bitmapToMat(imgbitmap, img);
         //Cambiar de escala
-        cvtColor(img, img, COLOR_BGR2GRAY);
-        MatOfRect rostro = new MatOfRect();
-        //FaceDetector.detectMultiscale();
+        Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2BGRA);
 
+        CascadeClassifier rostro = new CascadeClassifier();
+
+        try{
+            InputStream is = this.getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
+            File haardir = getDir("cascade", Context.MODE_PRIVATE);
+            haar = new File(haardir, "haarcascade_frontalface_alt.xml");
+            FileOutputStream os = new FileOutputStream(haar);
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+
+            while((bytesRead = is.read(buffer)) != -1){
+                os.write(buffer, 0, bytesRead);
+            }
+            is.close();
+            os.close();
+
+            rostro = new CascadeClassifier(haar.getAbsolutePath());
+
+        } catch (Exception e) {
+            Log.e("OpenCVActivity", "Error cargando cascade", e);
+        }
+
+        //Detección de rostros
+
+
+        MatOfRect matOfRect = new MatOfRect();
+        rostro.detectMultiScale(img, matOfRect);
+
+        int numcaras = matOfRect.toArray().length;
+
+
+        for(Rect cara: matOfRect.toArray()){
+            Imgproc.rectangle(img, new Point(cara.x+300, cara.y+300), new Point(cara.x + cara.width*20, cara.y + cara.height*20), new Scalar(0,0,255), 3);
+        }
+
+        //Imgproc.resize(img, img, new Size(1, 1));
         //Volver a cambiar a BitMap para poner en pantalla
         Utils.matToBitmap(img, imgbitmap);
 
         imageView.setImageBitmap(imgbitmap);
     }
+
+
 }
