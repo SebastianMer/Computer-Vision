@@ -7,6 +7,7 @@ import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,12 +23,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.osgi.OpenCVNativeLoader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,14 +53,12 @@ public class MainActivity extends AppCompatActivity {
     Mat img = new Mat();
     Bitmap gris, imgbitmap;
     String rutaImagen;
+    CascadeClassifier dect;
+    File haar;
 
     private static String TAG = "MainActivity";
     static {
-        if(OpenCVLoader.initDebug()){
-            Log.d(TAG, "OpenCV instalado exitosamente.");
-        }else{
-            Log.d(TAG, "OpenCV no se instalo Error..");
-        }
+
     }
 
 
@@ -66,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         btnGaleria=findViewById(R.id.btnGaleria);
         imageView=findViewById(R.id.imageView);
         imagen=findViewById(R.id.imageView);
+
+        if(!OpenCVLoader.initDebug()){
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, baseCallback);
+        }else{
+            baseCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
 
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
@@ -163,12 +174,21 @@ public class MainActivity extends AppCompatActivity {
         Utils.bitmapToMat(imgbitmap, img);
         //Cambiar de escala
         cvtColor(img, img, COLOR_BGR2GRAY);
-        MatOfRect rostro = new MatOfRect();
-        //FaceDetector.detectMultiscale();
+
+        //Detección de rostros
+        MatOfRect matOfRect = new MatOfRect();
+
+        dect.detectMultiScale(img, matOfRect);
+
+
+        /*for(Rect r: rostro.toArray()){
+            Imgproc.rectangle(img, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(255,0,0));
+        }*/
 
         //Volver a cambiar a BitMap para poner en pantalla
         Utils.matToBitmap(img, imgbitmap);
 
         imageView.setImageBitmap(imgbitmap);
     }
+
 }
