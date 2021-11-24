@@ -35,17 +35,11 @@
         android:text="@string/btnGaleria" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnRec"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:text="@string/btnRec"
         android:translationX="140dp"
         android:translationY="-50dp" />
-
-    <Button
-        android:id="@+id/btnRec"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
 
 </LinearLayout>

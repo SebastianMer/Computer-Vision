@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnCamara;
     Button btnGaleria;
+    Button btnRec;
     ImageView imageView;
     ImageView imagen;
     Mat img = new Mat();
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     CascadeClassifier dect;
     File haar;
 
+    int ent;
     private static String TAG = "MainActivity";
     static {
         if(OpenCVLoader.initDebug()){
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnCamara=findViewById(R.id.btnCamara);
         btnGaleria=findViewById(R.id.btnGaleria);
+        btnRec=findViewById(R.id.btnRec);
+
         imageView=findViewById(R.id.imageView);
         imagen=findViewById(R.id.imageView);
 
@@ -102,15 +106,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                cargarImagen();
+                cargarImagen('D');
+            }
+        });
+
+        btnRec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                cargarImagen('R');
             }
         });
     }
 
-    private void cargarImagen(){
+    private void cargarImagen(char btn){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/");
-        startActivityForResult(intent.createChooser(intent,"Seleccione la aplicacion"),10);
+        switch (btn){
+            case 'D': startActivityForResult(intent.createChooser(intent,"Seleccione la aplicacion"),10);
+                        break;
+
+            case 'R': startActivityForResult(intent.createChooser(intent,"Seleccione la aplicacion"),15);
+                        break;
+
+            default:break;
+        }
+
     }
 
     private void abrirCamara(){
@@ -150,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //imagen.setImageBitmap(imgbitmap);
-            Grises(imageView);
+            Grises(imageView, requestCode);
+
         }
         if (requestCode==1 && resultCode == RESULT_OK){
             /*Bundle extras= data.getExtras();
@@ -168,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         return imagen;
     }
 
-    public void Grises(View v){
+    public void Grises(View v, int requestCode){
         BitmapFactory.Options o = new BitmapFactory.Options();
 
         //Convertir de BitMap a Mat
@@ -216,9 +238,14 @@ public class MainActivity extends AppCompatActivity {
         Bitmap gris = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img, gris);
 
-        imageView.setImageBitmap(gris);
+        if(requestCode == 10){
+            imageView.setImageBitmap(gris);
+            Toast.makeText(getApplicationContext(), numcaras+" Caras encontradas", Toast.LENGTH_SHORT).show();
+        }else if(requestCode == 15){
+            imageView.setImageBitmap(gris);
+            Toast.makeText(getApplicationContext(), " Reconociendo ...", Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(getApplicationContext(), numcaras+" Caras encontradas", Toast.LENGTH_SHORT).show();
     }
 
 
