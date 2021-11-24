@@ -61,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
     String rutaImagen;
     CascadeClassifier dect;
     File haar;
+    Mat pre_cara;
+    int i = 0;
 
-    int ent;
     private static String TAG = "MainActivity";
     static {
         if(OpenCVLoader.initDebug()){
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //imagen.setImageBitmap(imgbitmap);
-            Grises(imageView, requestCode);
+            Deteccion_Haar(imageView, requestCode);
 
         }
         if (requestCode==1 && resultCode == RESULT_OK){
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         return imagen;
     }
 
-    public void Grises(View v, int requestCode){
+    public void Deteccion_Haar(View v, int requestCode){
         BitmapFactory.Options o = new BitmapFactory.Options();
 
         //Convertir de BitMap a Mat
@@ -227,11 +228,14 @@ public class MainActivity extends AppCompatActivity {
         rostro.detectMultiScale(img, matOfRect);
 
         int numcaras = matOfRect.toArray().length;
-
+        Rect rectCrop=null;
 
         for(Rect cara: matOfRect.toArray()){
             Imgproc.rectangle(img, new Point(cara.x, cara.y), new Point(cara.x + cara.width, cara.y + cara.height), new Scalar(0,0,255), 3);
+            rectCrop = new Rect(cara.x, cara.y, cara.width, cara.height);
         }
+
+
 
         //Imgproc.resize(img, img, new Size(1, 1));
         //Volver a cambiar a BitMap para poner en pantalla
@@ -242,7 +246,12 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageBitmap(gris);
             Toast.makeText(getApplicationContext(), numcaras+" Caras encontradas", Toast.LENGTH_SHORT).show();
         }else if(requestCode == 15){
-            imageView.setImageBitmap(gris);
+            pre_cara = new Mat(img,rectCrop);
+
+            Imgproc.resize(pre_cara, pre_cara, new Size(500, 500));
+            Bitmap pre = Bitmap.createBitmap(pre_cara.cols(), pre_cara.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(pre_cara, pre);
+            imageView.setImageBitmap(pre);
             Toast.makeText(getApplicationContext(), " Reconociendo ...", Toast.LENGTH_SHORT).show();
         }
 
