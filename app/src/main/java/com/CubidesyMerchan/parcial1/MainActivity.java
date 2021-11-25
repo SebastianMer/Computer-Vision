@@ -40,6 +40,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static org.opencv.core.CvType.CV_32F;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btnCamara;
@@ -275,12 +277,16 @@ public class MainActivity extends AppCompatActivity {
             os.close();
 
             String seb_dir = sebas.getAbsolutePath();
-            Mat train_seb = new Mat(55,1,CvType.CV_64F );
+            Size dt = new Size(55,1);
+            Mat train_seb = new Mat(55, 1,CV_32F);
 
-            train_seb.put(55, 1, 9.97745209e+01, 1.05430511e+02, 1.11519707e+02, 9.59469070e+01,
-                      1.03286270e+02, -5.97784653e+01, -6.07402306e+01, 8.10382080e+01,
+
+            double  numeros[] = new double[55];
+
+            numeros = new double[]{9.97745209e+01, 1.05430511e+02, 1.11519707e+02, 9.59469070e+01,
+                    1.03286270e+02, -5.97784653e+01, -6.07402306e+01, 8.10382080e+01,
                     1.17843781e+02, 8.40067444e+01, 8.15825119e+01, -1.12500320e+02,
-                     7.86857147e+01, 9.94324722e+01, 9.99810944e+01, 1.01215935e+02,
+                    7.86857147e+01, 9.94324722e+01, 9.99810944e+01, 1.01215935e+02,
                     -9.46645966e+01, -1.02959785e+02, 8.20064240e+01, -1.87276993e+01,
                     -9.46645966e+01, -1.14954643e+02, -8.66395340e+01, 1.01167747e+02,
                     -2.50557690e+01, -6.66079559e+01, -5.42955246e+01, 9.94538422e+01,
@@ -290,30 +296,71 @@ public class MainActivity extends AppCompatActivity {
                     -5.00738449e+01, 1.11457710e+02, 1.17126442e+02, -9.75823364e+01,
                     9.25721970e+01, 1.05004166e+02, -6.06802864e+01, -9.68201447e+01,
                     -1.71307571e+02, -6.64568024e+01, 1.22038727e+02, -6.98824615e+01,
-                    -8.69313889e+01, -1.74588833e+01, -2.10118313e+01);
+                    -8.69313889e+01, -1.74588833e+01, -2.10118313e+01};
 
-
-            // Test de PCA
-            Size sz = new Size();
-            sz = pre_cara.size();
-            Mat test = new Mat(sz, CvType.CV_64F);
-            for (int i = 0; i < 500; i++) {
-                for (int j = 0; j < 500; j++){
-                    test.put(i, j, pre_cara.get(i, j));
-                }
+            for( i = 0; i < 55; i++){
+                train_seb.put(i, 0);
             }
 
-            Mat mean = new Mat();
-            Mat eigenvectors = new Mat();
-            Mat eigenvalues = new Mat();
+
+            //Pasar la imagen como vector
+            Mat data = new Mat();
+            Mat image = new Mat();
+            Size size = new Size(750000, 1);
+            data = pre_cara.reshape(1,1);
+            Imgproc.resize(data, data, size, 1, 1);
+
+            // Test de PCA
+            Mat mean_test = new Mat( );
+            Mat eigenvectors_test = new Mat();
+            Mat eigenvalues_test = new Mat();
             Mat test_eigenfaces = new Mat();
-            Core.PCACompute2(test, mean, eigenvectors, eigenvalues);
-            Core.PCAProject(test, mean, eigenvectors, test_eigenfaces);
+            Core.PCACompute2(data, mean_test, eigenvectors_test, eigenvalues_test, 1);
+            Core.PCAProject(data, mean_test, eigenvectors_test, test_eigenfaces);
+
+            Size sz = new Size(1, 55);
+            Imgproc.resize(test_eigenfaces, test_eigenfaces, sz, 1, 1);
+
+            //Distancia
+
+            int ant = 0;
+            double dis, min_dis;
+            float rate = 0, total = 0;
+
+            for (int i = 0; i < test_eigenfaces.rows(); i++)
+            {
+                min_dis  = Core.norm(test_eigenfaces.row(i), train_seb.row(0), Core.NORM_L2);
+
+                for (int j = 0; j < train_seb.rows(); j++)
+                {
+                    dis = Core.norm(test_eigenfaces.row(i), train_seb.row(j), Core.NORM_L2);
+
+                    if (dis < 1)
+                    {
+                        min_dis = dis;
+                        total +=min_dis;
+                        ant++;
+                    }
+
+
+                }
+
+            }
+
+            //Andres 2.29e-39.
+            //Sebastian 635.
+
+            if(total > 600){
+                Toast.makeText(getApplicationContext(), "Sebastián", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "Sin reconocer", Toast.LENGTH_SHORT).show();
+            }
 
 
 
 
-            Toast.makeText(getApplicationContext(), " Hasta ahora bien", Toast.LENGTH_SHORT).show();
+
+
 
 
         } catch (Exception e) {
