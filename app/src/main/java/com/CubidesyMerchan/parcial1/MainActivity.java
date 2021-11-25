@@ -29,8 +29,13 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.features2d.Features2d;
+import org.opencv.features2d.Feature2D;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
@@ -38,14 +43,36 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.osgi.OpenCVNativeLoader;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
 
 import java.io.File;
+import java.io.Serializable;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import javax.security.auth.callback.PasswordCallback;
+import javax.xml.parsers.ParserConfigurationException;
 
 import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
+import static org.opencv.core.CvType.CV_16S;
+import static org.opencv.core.CvType.CV_32F;
+import static org.opencv.core.CvType.CV_32FC3;
 import static org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY;
 import static org.opencv.imgproc.Imgproc.cvtColor;
 
@@ -246,14 +273,52 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageBitmap(gris);
             Toast.makeText(getApplicationContext(), numcaras+" Caras encontradas", Toast.LENGTH_SHORT).show();
         }else if(requestCode == 15){
+            pre_cara = new Mat(500, 500, CvType.CV_64F);
             pre_cara = new Mat(img,rectCrop);
 
             Imgproc.resize(pre_cara, pre_cara, new Size(500, 500));
             Bitmap pre = Bitmap.createBitmap(pre_cara.cols(), pre_cara.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(pre_cara, pre);
             imageView.setImageBitmap(pre);
-            Toast.makeText(getApplicationContext(), " Reconociendo ...", Toast.LENGTH_SHORT).show();
+            metodoPca();
         }
+
+    }
+
+    public void metodoPca(){
+        /*Mat dataPts = new Mat();
+        Mat mean = new Mat();
+        Mat eigenvectors = new Mat();
+        Mat eigenvalues = new Mat();
+        Core.PCACompute2(dataPts, mean, eigenvectors, eigenvalues);*/
+
+        //Lectura de archivo xml
+
+        Mat trian_seb = new Mat(55, 1, CV_16S);
+
+        trian_seb.put(55, 1, 9.97745209e+01, 1.05430511e+02, 1.11519707e+02, 9.59469070e+01,
+                    1.03286270e+02, -5.97784653e+01, -6.07402306e+01, 8.10382080e+01, 1.17843781e+02, 8.40067444e+01,
+                    8.15825119e+01, -1.12500320e+02, 7.86857147e+01, 9.94324722e+01, 9.99810944e+01, 1.01215935e+02,
+                    -9.46645966e+01, -1.02959785e+02, 8.20064240e+01, -1.87276993e+01,
+                    -9.46645966e+01, -1.14954643e+02, -8.66395340e+01, 1.01167747e+02,
+                    -2.50557690e+01, -6.66079559e+01, -5.42955246e+01, 9.94538422e+01,
+                    -1.73107529e+02, 1.00517487e+02, -1.76240723e+02, -1.02473778e+02,
+                    -1.11410904e+02, 1.00714836e+02, -1.67855103e+02, 1.00150253e+02,
+                    -4.25327225e+01, -2.02810574e+01, -5.44977760e+01, 8.62398529e+01,
+                    -5.00738449e+01, 1.11457710e+02, 1.17126442e+02, -9.75823364e+01,
+                    9.25721970e+01, 1.05004166e+02, -6.06802864e+01, -9.68201447e+01,
+                    -1.71307571e+02, -6.64568024e+01, 1.22038727e+02, -6.98824615e+01,
+                    -8.69313889e+01, -1.74588833e+01, -2.10118313e+01);
+
+
+        pre_cara.convertTo(pre_cara, CV_32FC3, 1/255.0);
+        Mat test = new Mat(500, 500, CvType.CV_64F);
+        Mat mean = new Mat();
+        Mat eigenvectors = new Mat();
+        Mat eigenvalues = new Mat();
+        Core.PCACompute2(test, mean, eigenvectors, eigenvalues);
+
+        Toast.makeText(getApplicationContext(), " Hasta ahora bien", Toast.LENGTH_SHORT).show();
 
     }
 
