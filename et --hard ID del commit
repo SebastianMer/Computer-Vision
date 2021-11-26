@@ -1,0 +1,121 @@
+[33mcommit 29543ecae5f26ad7e00698be1b7b8f667e5e44e0[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Thu Nov 25 21:34:08 2021 -0500
+
+    errores
+
+[33mcommit 14b2e21915deb730fae3f87ccff98fde8a44696e[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Thu Nov 25 18:25:58 2021 -0500
+
+    Detección de rostro sebastián
+
+[33mcommit 43f18e3949b720f67ae1f1de6460596ede8766f5[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Thu Nov 25 14:50:48 2021 -0500
+
+    Correción de lectura xml
+
+[33mcommit d8c067ef4c4d2356735604873754b44d7fa52dc7[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Thu Nov 25 14:47:41 2021 -0500
+
+    Creación de testeigenfaces, pero error en la lectura del xml
+
+[33mcommit ef9eb840ac532917e289b6e3acf13df4dd72cd43[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Wed Nov 24 22:01:26 2021 -0500
+
+    Lectura de entrenamiento
+
+[33mcommit 1810e658e11aec4adff0751dbf79811f60121b3b[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Wed Nov 24 14:58:28 2021 -0500
+
+    Recorte de cara para reconocimiento
+
+[33mcommit 6a2e6c730c90161586b20f512135e0ed01ae7374[m
+Merge: 9cec885 a8e4e6a
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Wed Nov 24 14:12:48 2021 -0500
+
+    Merge branch 'master' of https://github.com/SebastianMer/Computer-Vision
+
+[33mcommit 9cec8853dd1434a95b04ec35992c4a5f92b4d1d5[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Wed Nov 24 14:05:43 2021 -0500
+
+    Detección de rostros con boton de reconocimiento
+
+[33mcommit a8e4e6adabb8f672a2b6a8029d679e4aa8c0c43c[m
+Author: SebastianMer <74374098+SebastianMer@users.noreply.github.com>
+Date:   Mon Nov 22 18:26:39 2021 -0500
+
+    Create README.md
+
+[33mcommit c36611c0a1f6ebb0bc2ff58847cb1f339c82e6ac[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 15:03:39 2021 -0500
+
+    Correciones estéticas
+
+[33mcommit 1c6768b678caa7836b1239bb85f486ca91383648[m
+Merge: 5fa3b5b 51d651f
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 14:45:57 2021 -0500
+
+    Detección de rostros finalizado
+
+[33mcommit 51d651f2f19444f0b6b6526439f12a0dbd6f2d6c[m[33m ([m[1;32mprueba[m[33m)[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 14:42:17 2021 -0500
+
+    Detección de rostros finalizado
+
+[33mcommit 5fa3b5b4f7019387aaeb256c05757e16517d7a00[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 14:16:49 2021 -0500
+
+    Errores
+
+[33mcommit cd14c22a77939d0d6a147230515e3acfe7b7a66e[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 13:50:41 2021 -0500
+
+    Detección de rostro, pero no lo hace bien
+
+[33mcommit c1a6342588b52f4fda1e5c57e89500fcc7404acf[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 10:45:09 2021 -0500
+
+    Intento subir HAAR
+
+[33mcommit 2a3d209142921907fe6bc556c1784342fee1ac65[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Mon Nov 22 09:26:18 2021 -0500
+
+    Correción de error, impementación opencv cambiando de escalalas imagenes
+
+[33mcommit c43a3c4748c61f0048a24b2cd3da95807f66b6b0[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Sun Nov 21 18:05:13 2021 -0500
+
+    Color, botones, librerias, opencv
+
+[33mcommit 3df8e965e504c84338d94b891618b7a3739b6c1d[m
+Author: Sebastián_Merchán <sebastian.merchan01@correo.usa.edu.co>
+Date:   Sat Nov 20 19:50:10 2021 -0500
+
+    Cambio 2: guardar imagenes en una carpeta y cambio de color
+
+[33mcommit 69ece04155c9784af329954bdf0c9de5ac80dae1[m
+Author: Andres <Andres.cubides01@correo.usa.edu.co>
+Date:   Fri Sep 3 17:49:07 2021 -0500
+
+    cambio 1 : abre galeria y toma foto (no guarda fotos tomadas)
+
+[33mcommit 769c90034c1113902140e0811602d2b0c7ad9c23[m
+Author: Andres <Andres.cubides01@correo.usa.edu.co>
+Date:   Fri Sep 3 17:21:04 2021 -0500
+
+    este es el primer proyecto

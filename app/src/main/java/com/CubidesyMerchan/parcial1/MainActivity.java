@@ -352,7 +352,10 @@ public class MainActivity extends AppCompatActivity {
 
             if(total > 600){
                 Toast.makeText(getApplicationContext(), "Sebastián", Toast.LENGTH_SHORT).show();
-            }else{
+            }else if(total < 2.29e-39){
+                Toast.makeText(getApplicationContext(), "Andres", Toast.LENGTH_SHORT).show();
+            }
+            else{
                 Toast.makeText(getApplicationContext(), "Sin reconocer", Toast.LENGTH_SHORT).show();
             }
 
