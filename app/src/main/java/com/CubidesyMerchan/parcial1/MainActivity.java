@@ -315,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
             Mat eigenvectors_test = new Mat();
             Mat eigenvalues_test = new Mat();
             Mat test_eigenfaces = new Mat();
+
             Core.PCACompute2(data, mean_test, eigenvectors_test, eigenvalues_test, 1);
             Core.PCAProject(data, mean_test, eigenvectors_test, test_eigenfaces);
 
